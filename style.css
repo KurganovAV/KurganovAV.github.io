@@ -297,7 +297,7 @@ section:nth-child(even) {
 
 /* Футер */
 footer {
-    background: #34495e;
+    background: #2c3e50;
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -440,3 +440,4 @@ footer {
         font-size: 0.9rem;
     }
 }
+
