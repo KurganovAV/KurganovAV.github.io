@@ -1,41 +1,49 @@
 /* Общие стили */
-body {
-    font-family: 'Georgia', serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f9f9f9;
+    overflow-x: hidden;
 }
 
 .container {
-    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* Шапка */
 header {
     background: #2c3e50;
     color: white;
-    padding: 2rem 0;
+    padding: 1rem 0;
     text-align: center;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-header p {
-    margin: 0.5rem 0;
-    font-style: italic;
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 nav a {
     color: white;
-    margin: 0 1rem;
     text-decoration: none;
+    padding: 5px 10px;
+    white-space: nowrap;
 }
 
 nav a:hover {
@@ -44,54 +52,63 @@ nav a:hover {
 
 /* Секции */
 section {
-    padding: 4rem 0;
+    padding: 40px 0;
 }
 
 section:nth-child(even) {
-    background: #eee;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
+    background: #f4f4f4;
 }
 
 /* Сетка товаров */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
 }
 
 .product-card {
     background: white;
-    border-radius: 5px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .product-card img {
-    max-width: 100%;
-    height: 250px;
-    object-fit: cover;
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
     border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    min-height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card p {
+    flex-grow: 1;
+    margin-bottom: 15px;
 }
 
 .price {
     color: #e74c3c;
-    font-size: 1.2rem;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: auto;
 }
 
-/* Футер */
-footer {
-    background: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 2rem 0;
-}
-/* Стили для раздела "Обо мне" */
+/* Обо мне */
 .about-content {
     display: flex;
     align-items: center;
@@ -111,40 +128,10 @@ footer {
     width: 100%;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-    .about-content {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .about-image {
-        flex: 0 0 auto;
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .about-image img {
-        width: 100%;
-    }
-}
-/* Дополнительные стили для улучшения внешнего вида */
-.about-image img {
-    transition: transform 0.3s ease;
-}
-
-.about-image img:hover {
-    transform: scale(1.02);
-}
-
-.about-text p {
-    line-height: 1.6;
-    font-size: 1.1em;
-}
-/* Стили для модального окна */
+/* Модальное окно */
 .modal {
     display: none;
     position: fixed;
@@ -154,32 +141,41 @@ footer {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.9);
+    overflow: hidden;
 }
 
 .modal-content {
     display: block;
     margin: auto;
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95%;
+    max-height: 95%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    object-fit: contain;
 }
 
 .close {
     position: absolute;
     top: 15px;
-    right: 35px;
+    right: 25px;
     color: #fff;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close:hover {
     color: #ccc;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
 }
 
 #caption {
@@ -189,7 +185,11 @@ footer {
     transform: translateX(-50%);
     color: white;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
+    max-width: 90%;
+    padding: 10px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 5px;
 }
 
 .zoomable {
@@ -198,14 +198,30 @@ footer {
 }
 
 .zoomable:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
-/* Стили для статистики */
+.product-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.product-images img {
+    flex: 1;
+    min-width: 120px;
+    height: 150px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+/* Статистика */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
     margin-top: 20px;
 }
 
@@ -213,7 +229,7 @@ footer {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     text-align: center;
 }
 
@@ -221,9 +237,184 @@ footer {
     font-size: 2em;
     font-weight: bold;
     color: #2c3e50;
+    margin-bottom: 5px;
 }
 
 .stat-label {
     color: #7f8c8d;
-    margin-top: 5px;
+    font-size: 0.85em;
+}
+
+#stats {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 0;
+}
+
+#stats h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: white;
+    font-size: 1.8rem;
+}
+
+#stats-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+#stats-button:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .about-content {
+        gap: 30px;
+    }
+    
+    .about-image {
+        flex: 0 0 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 30px 0;
+    }
+    
+    .about-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .about-image {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .product-card img {
+        height: 200px;
+    }
+    
+    .product-images {
+        flex-direction: column;
+    }
+    
+    .product-images img {
+        min-width: 100%;
+        height: 180px;
+    }
+    
+    nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .modal-content {
+        max-width: 98%;
+        max-height: 98%;
+    }
+    
+    .close {
+        top: 10px;
+        right: 15px;
+        font-size: 30px;
+    }
+    
+    #caption {
+        font-size: 14px;
+        bottom: 10px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #stats-button {
+        bottom: 15px;
+        right: 15px;
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    section {
+        padding: 25px 0;
+    }
+    
+    .product-card {
+        padding: 15px;
+    }
+    
+    .product-card img {
+        height: 180px;
+    }
+    
+    .product-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #stats-button {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Улучшения для очень маленьких экранов */
+@media (max-width: 360px) {
+    .product-card img {
+        height: 150px;
+    }
+    
+    .product-images img {
+        height: 140px;
+    }
+    
+    header h1 {
+        font-size: 1.3rem;
+    }
+    
+    nav a {
+        padding: 3px 8px;
+        font-size: 0.9rem;
+    }
 }
