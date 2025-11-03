@@ -273,6 +273,8 @@ section:nth-child(even) {
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
     white-space: nowrap;
+    margin: 0;
+    transform: none !important;
 }
 
 #stats-button:hover {
@@ -418,3 +420,4 @@ section:nth-child(even) {
         font-size: 0.9rem;
     }
 }
+
