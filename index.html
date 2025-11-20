@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Клюква-арт</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .close:hover {
+            color: #ccc;
+        }
+        #caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        /* Стили для карусели */
+        .carousel {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+            min-height: 250px;
+        }
+        
+        .carousel-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .carousel-image.active {
+            display: block;
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 3px;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .carousel-prev {
+            left: 10px;
+        }
+        
+        .carousel-next {
+            right: 10px;
+        }
+        
+        .carousel-counter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            z-index: 10;
+        }
+        
+        /* Загрузочное состояние */
+        .carousel-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>Курганова Александра</h1>
+            <p>Скульптор</p>
+            <nav>
+                <a href="#about">Обо мне</a>
+                <a href="#products">Товары</a>
+                <a href="#masterclasses">Мастер-классы</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/author.jpg" alt="Курганова Александра">
+                </div>
+                <div class="about-text">
+                    <p>Я - Курганова Александра, скульптор, педагог, а также, мама четверых малышей. 
+                    Работаю в технике папье-маше, экспериментирую с эпоксидной смолой, природными материалами. 
+                    Создаю интерьерные куклы, шкатулки, светильники, рождественские ёлки и подставки под них.
+                    В моих работах часто можно увидеть евангельские и библейские мотивы, так как, являясь православным человеком, я вдохновляюсь верой в Бога.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="container">
+            <h2>Товары</h2>
+            <div class="product-grid" id="products-container">
+                <!-- Товары загрузятся автоматически -->
+            </div>
+        </div>
+    </section>
+
+    <section id="masterclasses">
+        <div class="container">
+            <h2>Мастер-классы</h2>
+            <div class="product-grid" id="masterclasses-container">
+                <!-- Мастер-классы загрузятся автоматически -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h2>Контакты</h2>
+            <p>Свяжитесь со мной, чтобы обсудить заказ или задать вопросы:</p>
+            <ul>
+                <li>Телефон: +7 (925) 712-80-70</li>
+                <li>Email: forka@inbox.ru</li>
+                <li>Социальные сети: 
+                    <a href="https://t.me/klukva_art">Telegram</a> | 
+                    <a href="https://vk.com/pravoslavny_vaib">VK</a>
+                </li>
+            </ul>
+            <p>&copy; 2025 Курганова Александра. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ДАННЫЕ ТОВАРОВ - РЕДАКТИРУЙ ТОЛЬКО ЭТОТ БЛОК!
+        const productsData = [
+            {
+                id: 1,
+                name: 'Статуэтка "12 месяцев"',
+                description: 'Ёлочка по мотивам сказки 12 месяцев. Глядя на неё, можно погрузиться в мир ностальгии... Высота 43 см. Ширина 17 см. Скульптура ёлочки и рождественской звезды выполнена из папье-маше. Покраска - масло. Шарики - перламутр натуральный и стекло. Трава - войлок. Снег - эпоксидная смола. Основание - спил можжевельника.',
+                price: 12000,
+                folder: '12_месяцев',
+                maxPhotos: 2
+            },
+            {
+                id: 2,
+                name: 'Скульптура "Галапагосс"',
+                description: 'Шкатулка-черепаха из папье-маше с панцирем из полированного кокоса. Стеклянные глаза придают живость, а изящный дворец на спине добавляет сказочности. Идеальный хранитель для ваших treasures. Размер: 15×19×20 см.',
+                price: 15000,
+                folder: 'Галапагосс',
+                maxPhotos: 4
+            },
+            {
+                id: 3,
+                name: 'Скульптура "Кит с шарами"',
+                description: '"В мире грёз" - кит, парящий в облаках. Нежная композиция из папье-маше с перламутровыми шарами создаёт атмосферу лёгкости и волшебства. Размер: 33×45×37 см.',
+                price: 27000,
+                folder: 'Кит_с_шарами',
+                maxPhotos: 4
+            },
+            {
+                id: 4,
+                name: 'Композиция "Ледяное озеро"',
+                description: 'Светильник с ледяным озером из эпоксидной смолы и сказочным домиком. Два независимых источника света создают магическую атмосферу.Работает от адаптера 12V. Размер: 38×47×22 см.',
+                price: 34000,
+                folder: 'Ледяное_озеро',
+                maxPhotos: 5
+            },
+            {
+                id: 5,
+                name: 'Скульптура-шкатулка "Морская черепаха"',
+                description: 'Работа выполнена в технике папье-маше, что делает её долговечной, лёгкой и прочной. Панцирь черепашки выполнен из полированной скорлупы кокоса. В шкатулке имеется магнитный замочек. Глазки сделаны из стекла.',
+                price: 22000,
+                folder: 'Морская_черепаха',
+                maxPhotos: 5
+            },
+			{
+                id: 6,
+                name: 'Скульптура ёлочка "Принцесса на горошине"',
+                description: 'Ёлочка - принцесса 👸 на горошине 🫛✨. Работа выполнена в технике папье-маше. Покрыта масляной краской. Звезда и туфельки - покрыты паталью. Короны - металл. Кисти на перинах - шелковая нить. Ширина в широкой зоне около 25 см. Высота - около 45 см. К данной ёлочке идёт открытка.',
+                price: 8500,
+                folder: 'Принцесса_на_горошине',
+                maxPhotos: 5
+            },
+			{
+                id: 7,
+                name: 'Скульптура-светильник "Сладкое королевство"',
+                description: 'Данная елочка из сладкого королевства  Ванилопы Фон-Кекс🍨 Кто тут у нас та самая сладкоежка? 😋 Именно в таком виде ёлочку не повторится, она 100% эксклюзив. Чуть позже я покажу "ствол" ёлочки - гигантска палочка мороженого 😍 Сладости покупались отдельно от иллюминации и сам процесс придумывания этого типа освещения был очень увлекательный и сложный ☺️ Но я сейчас такая довольная, что картинка скложилась😍. Высоты ёлочки 43 см. Ширина - 25 см',
+                price: 8500,
+                folder: 'Сладкое_королевство_2',
+                maxPhotos: 3
+            },
+			{
+                id: 8,
+                name: 'Ёлочка Венелопы Фон Кекс',
+                description: 'Наверное, это самая сложная ёлка этой Рождественской коллекции. В точно таком виде и цвете ёлочку повторять не буду, поэтому это 100% эксклюзив. Высота 43 см. Ширина в широкой части - 20 см. К данной елочке в подарок идёт акварельная открытка. Доставка по России бесплатная',
+                price: 10000,
+                folder: 'Сладкое_королевство',
+                maxPhotos: 5
+            },
+			{
+                id: 9,
+                name: 'Светильник "Лесной домик"',
+                description: 'Лесной домик с лесенкой - ночник. Высота - 42 см. Ширина в самом широком месте - 12см. Работа выполнена в технике папье-маше. Покрыта масляной краской. Звезда покрыта паталью. Окно и снег - эпоксидная смола. Лесенка металлическая. Рождественский венок  украшен жемчугом. Ручка на двери керамика. Дверка закрывается на магните 🧲. Выключатель выведен наружу, для удобства эксплуатации. К данной ёлочке идёт открытка. Пень - можжевельник (пахнет ❤️).',
+                price: 8500,
+                folder: 'Лесной_домик',
+                maxPhotos: 5
+            },
+			{
+                id: 10,
+                name: 'Светильник "Домик на дереве"',
+                description: 'Светильник выполнен в форме сказочного домика на дереве и идеально подойдет для оформления детской комнаты или гостиной. Светильник электрический. Высота - 65 см. Ширина - 30 см. Выполнен в технике  папье-маше. Покрытие масляная краска под лаком. Спил - яблоня.',
+                price: 23000,
+                folder: 'Домик_на_дереве',
+                maxPhotos: 6
+            }
+        ];
+
+        const masterclassesData = [
+            {
+                id: 1,
+                name: 'Мастер-класс "Создание светильника"',
+                description: 'Научитесь создавать качественную массу папье-маше, работать с тонкими формами, создавать основу конструкции, работать с цветом и создавать текстуры. Идеально для начинающих.',
+                price: 10000,
+                folder: 'Мастер_класс_1',
+                maxPhotos: 1
+            }
+        ];
+
+        // Функция для генерации массива фото
+        function generateImageArray(maxPhotos) {
+            const images = [];
+            for (let i = 1; i <= maxPhotos; i++) {
+                const number = i.toString().padStart(3, '0');
+                images.push(`${number}.jpg`);
+				images.push(`${number}.jpeg`);
+            }
+            return images;
+        }
+
+        // Функция создания карусели
+        function createCarousel(folder, maxPhotos, productName) {
+            const images = generateImageArray(maxPhotos);
+            const carouselId = `carousel-${folder.replace(/\s+/g, '-')}-${Date.now()}`;
+            
+            let imagesHTML = '';
+            let loadedImages = 0;
+            
+            images.forEach((img, index) => {
+                const isActive = index === 0;
+                imagesHTML += `
+                    <img src="images/${folder}/${img}" alt="${productName}" 
+                         class="carousel-image zoomable ${isActive ? 'active' : ''}"
+                         data-carousel="${carouselId}"
+                         onerror="handleImageError(this, '${carouselId}')"
+                         onload="handleImageLoad('${carouselId}')">
+                `;
+            });
+            
+            const navigationHTML = maxPhotos > 1 ? `
+                <button class="carousel-btn carousel-prev" onclick="changeImage('${carouselId}', -1)">‹</button>
+                <button class="carousel-btn carousel-next" onclick="changeImage('${carouselId}', 1)">›</button>
+                <div class="carousel-counter" id="counter-${carouselId}">1 / ${maxPhotos}</div>
+            ` : '';
+            
+            return `
+                <div class="carousel" id="${carouselId}">
+                    ${imagesHTML}
+                    ${navigationHTML}
+                </div>
+            `;
+        }
+
+        // Обработчик ошибки загрузки изображения
+        function handleImageError(imgElement, carouselId) {
+            imgElement.style.display = 'none';
+            updateCarouselCounter(carouselId);
+        }
+
+        // Обработчик успешной загрузки изображения
+        function handleImageLoad(carouselId) {
+            updateCarouselCounter(carouselId);
+        }
+
+        // Обновление счетчика карусели
+        function updateCarouselCounter(carouselId) {
+            const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
+            const images = carousel.querySelectorAll('.carousel-image');
+            const counter = carousel.querySelector('.carousel-counter');
+            
+            // Считаем только видимые изображения
+            const visibleImages = Array.from(images).filter(img => {
+                return img.style.display !== 'none' && img.complete && img.naturalHeight !== 0;
+            });
+            
+            if (counter && visibleImages.length > 0) {
+                let currentIndex = 0;
+                visibleImages.forEach((img, index) => {
+                    if (img.classList.contains('active')) {
+                        currentIndex = index;
+                    }
+                });
+                counter.textContent = `${currentIndex + 1} / ${visibleImages.length}`;
+                
+                // Показываем/скрываем кнопки навигации
+                const prevBtn = carousel.querySelector('.carousel-prev');
+                const nextBtn = carousel.querySelector('.carousel-next');
+                
+                if (visibleImages.length > 1) {
+                    if (prevBtn) prevBtn.style.display = 'block';
+                    if (nextBtn) nextBtn.style.display = 'block';
+                } else {
+                    if (prevBtn) prevBtn.style.display = 'none';
+                    if (nextBtn) nextBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Функция смены изображения в карусели
+        function changeImage(carouselId, direction) {
+            const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
+            const images = carousel.querySelectorAll('.carousel-image');
+            const visibleImages = Array.from(images).filter(img => {
+                return img.style.display !== 'none' && img.complete && img.naturalHeight !== 0;
+            });
+            
+            if (visibleImages.length === 0) return;
+            
+            let currentIndex = -1;
+            visibleImages.forEach((img, index) => {
+                if (img.classList.contains('active')) {
+                    currentIndex = index;
+                    img.classList.remove('active');
+                }
+            });
+            
+            if (currentIndex === -1) {
+                visibleImages[0].classList.add('active');
+                return;
+            }
+            
+            let newIndex = currentIndex + direction;
+            if (newIndex < 0) newIndex = visibleImages.length - 1;
+            if (newIndex >= visibleImages.length) newIndex = 0;
+            
+            visibleImages[newIndex].classList.add('active');
+            updateCarouselCounter(carouselId);
+        }
+
+        // Функция создания карточки товара
+        function createProductCard(item, type) {
+            const carouselHTML = createCarousel(item.folder, item.maxPhotos, item.name);
+            
+            return `
+                <div class="product-card">
+                    ${carouselHTML}
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <p class="price"><strong>${typeof item.price === 'number' ? 'Цена: ' + item.price + ' руб.' : item.price}</strong></p>
+                </div>
+            `;
+        }
+
+        // Загрузка товаров и мастер-классов
+        document.addEventListener('DOMContentLoaded', function() {
+            const productsContainer = document.getElementById('products-container');
+            const masterclassesContainer = document.getElementById('masterclasses-container');
+            
+            // Загружаем товары
+            if (productsContainer) {
+                productsData.forEach(product => {
+                    productsContainer.innerHTML += createProductCard(product, 'product');
+                });
+            }
+            
+            // Загружаем мастер-классы
+            if (masterclassesContainer) {
+                masterclassesData.forEach(masterclass => {
+                    masterclassesContainer.innerHTML += createProductCard(masterclass, 'masterclass');
+                });
+            }
+            
+            // Инициализация модального окна
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            const captionText = document.getElementById("caption");
+            const closeBtn = document.querySelector(".close");
+            
+            // Обработчики для увеличения изображений
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('zoomable') && e.target.style.display !== 'none') {
+                    if (modal && modalImg && captionText) {
+                        modal.style.display = "block";
+                        modalImg.src = e.target.src;
+                        captionText.innerHTML = e.target.alt;
+                    }
+                }
+            });
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    if (modal) modal.style.display = "none";
+                });
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            }
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape" && modal) {
+                    modal.style.display = "none";
+                }
+            });
+            
+            // Обновляем все счетчики после загрузки страницы
+            setTimeout(() => {
+                document.querySelectorAll('.carousel').forEach(carousel => {
+                    updateCarouselCounter(carousel.id);
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
